@@ -1,5 +1,5 @@
 <div class="layout">
-  <div class="flex flex--col " >
+  <div class="flex flex--col" >
     {% for game in IDX_1.data limit :3 %}
     {% if trmnl.plugin_settings.custom_fields_values.artstyle == "title" %}
     {% assign gameImage = game.ImageTitle %}
@@ -10,65 +10,92 @@
     {% else %}
     {% assign gameImage = game.ImageIcon %}
     {% endif %}
-    <div class="item">
-      <div class="meta"> {{ forloop.index }}</div>
-
+    {% assign game_id_string = game.GameID | append: "" %}
+    {% assign achievements = IDX_0.RecentAchievements[game_id_string] %}
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+        {% assign achievement = null %}
+        {% for ach in achievements %}
+            {% if ach[1].HardcoreAchieved %}
+                {% assign achievement = ch[1] %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {% assign achievement = achievements.first[1] %}
+    {% endif %}    
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+        {% assign numAchieved = game.NumAchievedHardcore %}
+        {% assign scoreAchieved = game.ScoreAchievedHardcore %}
+    {% else %}
+        {% assign numAchieved = game.NumAchieved %}
+        {% assign scoreAchieved = game.ScoreAchieved %}
+    {% endif %}
+    <div class="item {% unless forloop.last %}border--h-6 pb--1{% endunless %}">
+      <div class="meta">{{ forloop.index }}</div>
       <div class="content ">
-        <div class="grid grid--cols-12 ">
+        <div class="grid grid--cols-12">
           <div class="col--span-1">
             <img class="image image-dither h--max-14 rounded layout-center-x" 
               src="https://retroachievements.org/{{ gameImage }}" /></div>
-          <div class="col--span-5 gap">
+          <div class="col--span-{% if achievement %}5{% else %}9{% endif %} gap">
             <div class="text--left ">
               <div class="title title--small  text-stroke " data-clamp="1">{{ game.Title }}</div>
               <div class="label label--inverted label--small m--1">{{ game.ConsoleName}}</div>
-              <div class="description">🕹️ {{ game.LastPlayed | date: "%x" }}
+              <div class="description">🕹️ {{ game.LastPlayed | l_date: '%y %b', trmnl.user.locale }}
               </div>
             </div>
           </div>
-
-          <div class="col--span-3">
+          {% if achievement %}
+          <div class="col--span-4">
             <div class="flex flex--row">
-
-              {% assign game_id_string = game.GameID | append: "" %}
-              {% for gamePair in IDX_0.RecentAchievements[game_id_string] limit :3 %}
-              {% assign achievement = gamePair[1] %}
-              <img class="image image-dither h--max-10 rounded" src="https://retroachievements.org/Badge/{{achievement.BadgeName}}.png" />
-              {% endfor %}        
+              <img class="image h--max-14" alt="{{achievement.Title}}" src="https://retroachievements.org/Badge/{{achievement.BadgeName}}.png" />
+              <div class="content">
+                <div class="label label--small">
+                  {{achievement.Title}}
+                </div>
+                <div class="description">{{achievement.DateAwarded | l_date: '%y %b', trmnl.user.locale}}
+                </div>
+              </div>
             </div>
-
           </div> 
-          <div class="col--span-3">
+          {% endif %}
+          <div class="col--span-2">
             <div class="grid">
               <div class="col">
+                {% if numAchieved >0%}
                 <div class="progress-bar progress-bar--small progress-bar--emphasis-2">
                   <div class="">
                     <span class="label label--small">🏆 </span>
-                    <span class="description">{{ game.NumAchieved}} / {{ game.NumPossibleAchievements}}</span>
+                    <span class="description">{{ numAchieved}} / {{ game.NumPossibleAchievements}}</span>
                   </div>
                   <div class="track">
                     {% if game.NumPossibleAchievements > 0 %}
-                    {% assign percentage = game.NumAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
+                    {% assign percentage = numAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
                     <div class="fill" style="width: {{ percentage | floor }}%"></div>
                     {% else %}
                     <div class="fill" style="width: 0%"></div>
                     {% endif %}
                   </div>
                 </div>
+                {% endif %}
+
+                {% if trmnl.plugin_settings.custom_fields_values.include_points != "no" and scoreAchieved >0 %}
+
                 <div class="progress-bar progress-bar--small">
                   <div class="">
                     <span class="label label--small">💰 </span>
-                    <span class="description">{{ game.ScoreAchieved}} / {{ game.PossibleScore}}</span>
+                    <span class="description">{{ scoreAchieved}} / {{ game.PossibleScore}}</span>
                   </div>
                   <div class="track">
-                    {% if game.ScoreAchieved > 0 %}
-                    {% assign percentage = game.ScoreAchieved | times: 100 | divided_by: game.PossibleScore %}
+                    {% if game.PossibleScore > 0 %}
+                    {% assign percentage = scoreAchieved | times: 100 | divided_by: game.PossibleScore %}
                     <div class="fill" style="width: {{ percentage | floor }}%"></div>
                     {% else %}
                     <div class="fill" style="width: 0%"></div>
                     {% endif %}
                   </div>
                 </div>
+                {% endif %}
               </div>
             </div>
           </div>

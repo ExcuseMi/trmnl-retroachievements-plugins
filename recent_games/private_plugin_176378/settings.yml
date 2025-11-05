@@ -16,7 +16,7 @@ custom_fields:
   github_url: https://github.com/ExcuseMi/trmnl-retroachievements-plugins
   learn_more_url: https://retroachievements.org/
 - keyname: api_key
-  field_type: password
+  field_type: string
   name: Retro Achievements API Key
   description: RetroAchievements API Key (https://retroachievements.org/settings).
   placeholder: RetroAchievements API Key
@@ -35,5 +35,21 @@ custom_fields:
   default: icon
   name: Artstyle
   description: Select the artstyle
-name: RetroAchievements - Recent Games
+- keyname: hardcore_only
+  field_type: select
+  options:
+  - 'No'
+  - 'Yes'
+  default: 'No'
+  name: Hardcore only
+  description: Only show achievements and points achieved without additional emulator features.
+- keyname: include_points
+  field_type: select
+  options:
+  - 'Yes'
+  - 'No'
+  default: 'Yes'
+  name: Include points
+  description: Include the points progress bar
+name: 'RetroAchievements: Recent Games'
 refresh_interval: 15

@@ -10,33 +10,55 @@
     {% else %}
     {% assign gameImage = game.ImageIcon %}
     {% endif %}
-    <div class="item">
+    {% assign game_id_string = game.GameID | append: "" %}
+    {% assign achievements = IDX_0.RecentAchievements[game_id_string] %}
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+    {% assign achievement = null %}
+    {% for ach in achievements %}
+    {% if ach[1].HardcoreAchieved %}
+    {% assign achievement = ch[1] %}
+    {% break %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    {% assign achievement = achievements.first[1] %}
+    {% endif %}    
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+    {% assign numAchieved = game.NumAchievedHardcore %}
+    {% assign scoreAchieved = game.ScoreAchievedHardcore %}
+    {% else %}
+    {% assign numAchieved = game.NumAchieved %}
+    {% assign scoreAchieved = game.ScoreAchieved %}
+    {% endif %}
+    <div class="item {% unless forloop.last %}border--h-6 pb--1{% endunless %}">
       <div class="meta"> {{ forloop.index }}</div>
 
       <div class="content ">
-        <div class="grid grid--cols-12 ">
+        <div class="grid grid--cols-11">
           <div class="col--span-2">
             <img class="image image-dither h--max-14 rounded layout-center-x" 
               src="https://retroachievements.org/{{ gameImage }}" /></div>
-          <div class="col--span-6 gap">
+          <div class="col--span-{% if numAchieved > 0 %}6{% else %}9{% endif %} gap">
             <div class="text--left ">
               <div class="title title--small  text-stroke" data-clamp="2">{{ game.Title }}</div>
-              <div class="description">🕹️ {{ game.LastPlayed | date: "%x" }}
+
+              <div class="description">🕹️ {{ game.LastPlayed | l_date: '%y %b', trmnl.user.locale}}{% if achievement %} 🏆 {{achievement.DateAwarded | l_date: '%y %b', trmnl.user.locale}}{% endif %}
+
               </div>
             </div>
           </div>
-
-          <div class="col--span-4">
+          {% if numAchieved > 0 %}
+          <div class="col--span-3">
             <div class="grid">
               <div class="col">
                 <div class="progress-bar progress-bar--small progress-bar--emphasis-2">
                   <div class="">
-                    <span class="label label--small"></span>
-                    <span class="description ">{{ game.NumAchieved}} / {{ game.NumPossibleAchievements}}</span>
+                    <span class="label label--small">🏆</span>
+                    <span class="description ">{{ numAchieved}} / {{ game.NumPossibleAchievements}}</span>
                   </div>
                   <div class="track">
                     {% if game.NumPossibleAchievements > 0 %}
-                    {% assign percentage = game.NumAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
+                    {% assign percentage = numAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
                     <div class="fill" style="width: {{ percentage | floor }}%"></div>
                     {% else %}
                     <div class="fill" style="width: 0%"></div>
@@ -46,6 +68,8 @@
               </div>
             </div>
           </div>
+          {% endif %}
+
         </div>
       </div>
     </div>
