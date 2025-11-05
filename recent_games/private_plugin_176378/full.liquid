@@ -1,0 +1,82 @@
+<div class="layout">
+  <div class="flex flex--col" >
+    {% for game in IDX_1.data limit :5 %}
+    {% if trmnl.plugin_settings.custom_fields_values.artstyle == "title" %}
+    {% assign gameImage = game.ImageTitle %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "ingame" %}
+    {% assign gameImage = game.ImageIngame %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "boxart" %}
+    {% assign gameImage = game.ImageBoxArt %}
+    {% else %}
+    {% assign gameImage = game.ImageIcon %}
+    {% endif %}
+    <div class="item">
+      <div class="meta">{{ forloop.index }}</div>
+      <div class="content ">
+        <div class="grid grid--cols-12 ">
+          <div class="col--span-1">
+            <img class="image image-dither h--max-14 rounded layout-center-x" 
+              src="https://retroachievements.org/{{ gameImage }}" /></div>
+          <div class="col--span-5 gap">
+            <div class="text--left ">
+              <div class="title title--small  text-stroke " data-clamp="1">{{ game.Title }}</div>
+              <div class="label label--inverted label--small m--1">{{ game.ConsoleName}}</div>
+              <div class="description">🕹️ {{ game.LastPlayed | date: "%x" }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col--span-3">
+            <div class="flex flex--row">
+              {% assign game_id_string = game.GameID | append: "" %}
+              {% for gamePair in IDX_0.RecentAchievements[game_id_string] limit :3 %}
+              {% assign achievement = gamePair[1] %}
+              <img class="image image-dither h--max-10 rounded" alt="{{achievement.Title}}" src="https://retroachievements.org/Badge/{{achievement.BadgeName}}.png" />
+              {% endfor %}        
+            </div>
+          </div> 
+          <div class="col--span-3">
+            <div class="grid">
+              <div class="col">
+                <div class="progress-bar progress-bar--small progress-bar--emphasis-2">
+                  <div class="">
+                    <span class="label label--small">🏆 </span>
+                    <span class="description">{{ game.NumAchieved}} / {{ game.NumPossibleAchievements}}</span>
+                  </div>
+                  <div class="track">
+                    {% if game.NumPossibleAchievements > 0 %}
+                    {% assign percentage = game.NumAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
+                    <div class="fill" style="width: {{ percentage | floor }}%"></div>
+                    {% else %}
+                    <div class="fill" style="width: 0%"></div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="progress-bar progress-bar--small">
+                  <div class="">
+                    <span class="label label--small">💰 </span>
+                    <span class="description">{{ game.ScoreAchieved}} / {{ game.PossibleScore}}</span>
+                  </div>
+                  <div class="track">
+                    {% if game.ScoreAchieved > 0 %}
+                    {% assign percentage = game.ScoreAchieved | times: 100 | divided_by: game.PossibleScore %}
+                    <div class="fill" style="width: {{ percentage | floor }}%"></div>
+                    {% else %}
+                    <div class="fill" style="width: 0%"></div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="title_bar">
+  <img class="image" src="https://retroachievements.org/{{IDX_0.UserPic}}">
+  <span class="title">{{IDX_0.User}}'s Recent Games</span>
+  <span class="instance">RetroAchievements</span>
+</div>

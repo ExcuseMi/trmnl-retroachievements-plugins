@@ -1,0 +1,39 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: "https://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=5&a=20&u={{username}}\r\n\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&u={{username}}"
+polling_headers: ''
+polling_body: ''
+id: 176378
+custom_fields:
+- keyname: about
+  name: About This Plugin
+  field_type: author_bio
+  description: Unofficial RetroAchievements plugin displaying a users recent games
+  github_url: https://github.com/ExcuseMi/trmnl-retroachievements-plugins
+  learn_more_url: https://retroachievements.org/
+- keyname: api_key
+  field_type: password
+  name: Retro Achievements API Key
+  description: RetroAchievements API Key (https://retroachievements.org/settings).
+  placeholder: RetroAchievements API Key
+- keyname: username
+  field_type: string
+  name: Target username or ULID
+  description: Target username or ULID
+  placeholder: username or ULID
+- keyname: artstyle
+  field_type: select
+  options:
+  - Icon
+  - Title
+  - Ingame
+  - BoxArt
+  default: icon
+  name: Artstyle
+  description: Select the artstyle
+name: RetroAchievements - Recent Games
+refresh_interval: 15

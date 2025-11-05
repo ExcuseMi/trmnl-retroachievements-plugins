@@ -1,0 +1,55 @@
+<div class="layout">
+  <div class="flex flex--col " >
+    {% for game in IDX_1.data limit :5 %}
+    {% if trmnl.plugin_settings.custom_fields_values.artstyle == "title" %}
+    {% assign gameImage = game.ImageTitle %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "ingame" %}
+    {% assign gameImage = game.ImageIngame %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "boxart" %}
+    {% assign gameImage = game.ImageBoxArt %}
+    {% else %}
+    {% assign gameImage = game.ImageIcon %}
+    {% endif %}
+    <div class="item">
+      <div class="meta"> {{ forloop.index }}</div>
+
+      <div class="content ">
+        <div class="grid grid--cols-11">
+          <div class="col--span-2">
+            <img class="image image-dither h--max-14 rounded layout-center-x" 
+              src="https://retroachievements.org/{{ gameImage }}" /></div>
+          <div class="col--span-6 gap">
+            <div class="text--left ">
+              <div class="title title--small  text-stroke" data-clamp="2">{{ game.Title }}</div>
+              <div class="description">🕹️ {{ game.LastPlayed | date: "%x" }}<span class="label label--inverted label--small m--1">{{ game.ConsoleName}}</span>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col--span-3">
+            <div class="grid">
+              <div class="col">
+                <div class="progress-bar progress-bar--small progress-bar--emphasis-2">
+                  <div class="">
+                    <span class="label label--small">🏆</span>
+                    <span class="description ">{{ game.NumAchieved}} / {{ game.NumPossibleAchievements}}</span>
+                  </div>
+                  <div class="track">
+                    {% if game.NumPossibleAchievements > 0 %}
+                    {% assign percentage = game.NumAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
+                    <div class="fill" style="width: {{ percentage | floor }}%"></div>
+                    {% else %}
+                    <div class="fill" style="width: 0%"></div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
