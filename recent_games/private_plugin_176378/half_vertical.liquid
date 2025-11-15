@@ -1,6 +1,7 @@
-<div class="layout">
-  <div class="flex flex--col " >
-    {% for game in IDX_1.data limit :5 %}
+<div class="layout layout--stretch">
+  {% if IDX_1.data %}
+  <div class="flex flex--col" data-overflow="true">
+    {% for game in IDX_1.data  %}
     {% if trmnl.plugin_settings.custom_fields_values.artstyle == "title" %}
     {% assign gameImage = game.ImageTitle %}
     {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "ingame" %}
@@ -76,4 +77,7 @@
     </div>
     {% endfor %}
   </div>
+    {% else %}
+  <div>No games found</div>
+  {% endif %}
 </div>

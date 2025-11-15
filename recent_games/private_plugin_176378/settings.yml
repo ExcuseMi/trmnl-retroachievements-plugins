@@ -4,7 +4,7 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: "https://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=5&a=20&u={{username}}\r\n\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&u={{username}}"
+polling_url: "{% if api_key != \"\" %}https://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=5&a=20&u={{username}}\r\n\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&u={{username}}\r\n{% else %}\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_0.json\r\n\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_1.json\r\n{% endif %}"
 polling_headers: ''
 polling_body: ''
 id: 176378
@@ -12,13 +12,14 @@ custom_fields:
 - keyname: about
   name: About This Plugin
   field_type: author_bio
-  description: Unofficial RetroAchievements plugin displaying a users recent games
+  description: Unofficial <b>RetroAchievements</b> plugin displaying a users <b>recent games</b>.
   github_url: https://github.com/ExcuseMi/trmnl-retroachievements-plugins
   learn_more_url: https://retroachievements.org/
 - keyname: api_key
   field_type: string
-  name: Retro Achievements API Key
-  description: RetroAchievements API Key (https://retroachievements.org/settings).
+  name: Retro Achievements Web API Key
+  optional: true
+  description: You can find your <b>Web API Key</b> under <b>Authentication</b> in your <b><a href="https://retroachievements.org/RetroAchievement settings">RetroAchievement settings</a></b>
   placeholder: RetroAchievements API Key
 - keyname: username
   field_type: string
