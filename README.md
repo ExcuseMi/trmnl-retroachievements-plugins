@@ -8,7 +8,7 @@ Please use this github to handle issues related to these plugins.
 <!-- PLUGIN_STATS_START -->
 ## 🚀 TRMNL RetroAchievements Plugin(s)
 
-*Last updated: 2025-12-12 06:39:14 UTC*
+*Last updated: 2025-12-13 06:35:28 UTC*
 
 
 ## <img src="assets/plugin-images/176378_icon.png" alt="RetroAchievements: Recent Games icon" width="32"/> [RetroAchievements: Recent Games](https://usetrmnl.com/recipes/176378)
