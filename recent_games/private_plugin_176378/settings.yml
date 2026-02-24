@@ -4,7 +4,7 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: "{% if api_key != \"\" %}https://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=5&a=20&u={{username}}\r\n\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&u={{username}}\r\n{% else %}\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_0.json\r\n\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_1.json\r\n{% endif %}"
+polling_url: "{% if api_key != \"\" %}\r\nhttps://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=50&a=20&u={{ username }}\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&c=50&u={{ username }}\r\n{% else %}\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_0.json\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_1.json\r\n{% endif %}"
 polling_headers: ''
 polling_body: ''
 id: 176378
@@ -15,6 +15,7 @@ custom_fields:
   description: Unofficial <b>RetroAchievements</b> plugin displaying a users <b>recent games</b>.
   github_url: https://github.com/ExcuseMi/trmnl-retroachievements-plugins
   learn_more_url: https://retroachievements.org/
+  help_text: TRMNL X Ready
 - keyname: api_key
   field_type: string
   name: Retro Achievements Web API Key

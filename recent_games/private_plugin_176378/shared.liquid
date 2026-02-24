@@ -1,0 +1,135 @@
+{% template main %}
+<div class="layout layout--stretch">
+  {% if IDX_1.data %}
+  {% assign this_year = 'now' | date: '%Y' %}
+  <div class="flex flex--col" data-overflow="true">
+    {% for game in IDX_1.data %}
+    {% if trmnl.plugin_settings.custom_fields_values.artstyle == "title" %}
+    {% assign gameImage = game.ImageTitle %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "ingame" %}
+    {% assign gameImage = game.ImageIngame %}
+    {% elsif trmnl.plugin_settings.custom_fields_values.artstyle == "boxart" %}
+    {% assign gameImage = game.ImageBoxArt %}
+    {% else %}
+    {% assign gameImage = game.ImageIcon %}
+    {% endif %}
+    {% assign game_id_string = game.GameID | append: "" %}
+    {% assign achievements = IDX_0.RecentAchievements[game_id_string] %}
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+    {% assign achievement = null %}
+    {% for ach in achievements %}
+    {% if ach[1].HardcoreAchieved %}
+    {% assign achievement = ach[1] %}
+    {% break %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    {% assign achievement = achievements.first[1] %}
+    {% endif %}
+    {% if trmnl.plugin_settings.custom_fields_values.hardcore_only == 'Yes' %}
+    {% assign numAchieved = game.NumAchievedHardcore %}
+    {% assign scoreAchieved = game.ScoreAchievedHardcore %}
+    {% else %}
+    {% assign numAchieved = game.NumAchieved %}
+    {% assign scoreAchieved = game.ScoreAchieved %}
+    {% endif %}
+    {% assign played_year = game.LastPlayed | date: '%Y' %}
+    {% if played_year == this_year %}{% assign played_fmt = game.LastPlayed | l_date: '%b %d', trmnl.user.locale %}{% else %}{% assign played_fmt = game.LastPlayed | l_date: "%b %d '%y", trmnl.user.locale %}{% endif %}
+    {% if achievement %}
+    {% assign ach_year = achievement.DateAwarded | date: '%Y' %}
+    {% if ach_year == this_year %}{% assign ach_fmt = achievement.DateAwarded | l_date: '%b %d', trmnl.user.locale %}{% else %}{% assign ach_fmt = achievement.DateAwarded | l_date: "%b %d '%y", trmnl.user.locale %}{% endif %}
+    {% endif %}
+    <div class="item {% unless forloop.last %}border--h-6 pb--1{% endunless %}">
+      <div class="meta">{{ forloop.index }}</div>
+      <div class="content w--full">
+        <div class="grid grid--cols-12">
+          {% unless h_compact %}
+          <div class="col--span-1 portrait:hidden">
+            <img class="image image-dither h--max-14 rounded layout-center-x"
+              src="https://retroachievements.org/{{ gameImage }}" />
+          </div>
+          {% endunless %}
+          <div class="col--span-{% if h_compact %}8{% else %}6{% endif %} portrait:col--span-{% if h_compact %}12{% else %}8{% endif %} gap">
+            <div class="text--left w--full">
+              <div class="title title--small text-stroke" data-clamp="1">{{ game.Title }}</div>
+              <div class="label label--inverted label--small m--1">{{ game.ConsoleName }}</div>
+              <div class="description">🕹️ {{ played_fmt }}
+                {% if achievement %}
+                  {% if h_compact %}
+                    🏆 {{ ach_fmt }}
+                    {% if game.PossibleScore %}<span class="hidden portrait:inline"> · {{ scoreAchieved }}/{{ game.PossibleScore }}</span>{% endif %}
+                  {% else %}
+                    <span class="hidden portrait:inline">🏆 {{ ach_fmt }}</span>
+                  {% endif %}
+                {% elsif h_compact and game.PossibleScore > 0 and game.scoreAchieved > 0 %}
+                  <span class="hidden portrait:inline">🏆 {{ scoreAchieved }}/{{ game.PossibleScore }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% unless h_compact %}
+          <div class="col--span-3 portrait:hidden">
+            {% if achievement %}
+            <div class="flex flex--row">
+              <img class="image h--max-14" alt="{{ achievement.Title }}" src="https://retroachievements.org/Badge/{{ achievement.BadgeName }}.png" />
+              <div class="content">
+                <div class="label label--small lg:label--base">{{ achievement.Title }}</div>
+                <div class="description">{{ ach_fmt }}</div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endunless %}
+          <div class="col--span-{% if h_compact %}4{% else %}2{% endif %} {% unless h_compact %}portrait:col--span-4{% endunless %} {% if h_compact %}portrait:hidden{% endif %}">
+            <div class="grid">
+              <div class="col">
+                {% if numAchieved > 0 %}
+                <div class="progress-bar progress-bar--small progress-bar--emphasis-2">
+                  <div class="">
+                    <span class="label label--small">🏆 </span>
+                    <span class="description">{{ numAchieved }} / {{ game.NumPossibleAchievements }}</span>
+                  </div>
+                  <div class="track">
+                    {% if game.NumPossibleAchievements > 0 %}
+                    {% assign percentage = numAchieved | times: 100 | divided_by: game.NumPossibleAchievements %}
+                    <div class="fill" style="width: {{ percentage | floor }}%"></div>
+                    {% else %}
+                    <div class="fill" style="width: 0%"></div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endif %}
+                {% if trmnl.plugin_settings.custom_fields_values.include_points != "no" and scoreAchieved > 0 %}
+                <div class="progress-bar progress-bar--small">
+                  <div class="">
+                    <span class="label label--small">💰 </span>
+                    <span class="description">{{ scoreAchieved }} / {{ game.PossibleScore }}</span>
+                  </div>
+                  <div class="track">
+                    {% if game.PossibleScore > 0 %}
+                    {% assign percentage = scoreAchieved | times: 100 | divided_by: game.PossibleScore %}
+                    <div class="fill" style="width: {{ percentage | floor }}%"></div>
+                    {% else %}
+                    <div class="fill" style="width: 0%"></div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div>No games found</div>
+  {% endif %}
+</div>
+<div class="title_bar">
+  <img class="image" src="https://retroachievements.org/{{ IDX_0.UserPic }}">
+  <span class="title" data-clamp="1">{{ IDX_0.User }}'s Recent Games {% if trmnl.plugin_settings.custom_fields_values.api_key == "" %} [No API key Provided, using stub data]{% endif %}</span>
+  <span class="instance"><img class="image image-dither" src="https://static.retroachievements.org/assets/images/ra-icon.webp" /></span>
+</div>
+{% endtemplate %}
