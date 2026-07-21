@@ -1,0 +1,84 @@
+# TRMNLP configuration
+# {{ env.VARIABLE }} interpolation is available here
+---
+# auto-reload when files change (`watch: false` to disable)
+watch:
+  - .trmnlp.yml
+  - src
+
+# values of custom fields (defined in src/settings.yml)
+custom_fields:
+  api_key: ''
+  username: Kushy96
+  artstyle: icon
+  hardcore_only: 'No'
+  include_points: 'Yes'
+
+# override variables
+variables:
+  trmnl:
+    system:
+      timestamp_utc: 1700000000
+    user:
+      locale: en
+    plugin_settings:
+      instance_name: 'RetroAchievements: Recent Games'
+      strategy: polling
+      dark_mode: 'no'
+      no_screen_padding: 'no'
+      custom_fields_values:
+        api_key: ''
+        username: Kushy96
+        artstyle: icon
+        hardcore_only: 'No'
+        include_points: 'Yes'
+
+  # Mirrors what src/transform.js's run() returns — set `error` to a string
+  # (and IDX_0/IDX_1 to null) to preview the error state instead.
+  error: null
+  IDX_0:
+    User: Kushy96
+    UserPic: /UserPic/Kushy96.png
+    RecentAchievements:
+      '2721':
+        '250043':
+          Title: Guv Gashes Gooey Goons
+          BadgeName: '276631'
+          DateAwarded: '2025-11-15 04:05:04'
+          HardcoreAchieved: 1
+      '22401':
+        '416190':
+          Title: Mistaken Report
+          BadgeName: '470100'
+          DateAwarded: '2025-11-15 03:20:57'
+          HardcoreAchieved: 1
+  IDX_1:
+    data:
+      - Title: 'Dragon Quest VIII: Journey of the Cursed King'
+        GameID: 2721
+        ConsoleName: PlayStation 2
+        ImageIcon: /Images/038649.png
+        ImageTitle: /Images/055969.png
+        ImageBoxArt: /Images/062378.png
+        ImageIngame: /Images/055970.png
+        LastPlayed: '2025-11-15 04:46:06'
+        NumAchieved: 2
+        NumAchievedHardcore: 2
+        NumPossibleAchievements: 208
+        ScoreAchieved: 3
+        ScoreAchievedHardcore: 3
+        PossibleScore: 1461
+      - Title: '~Homebrew~ Retro Adventure'
+        GameID: 22401
+        ConsoleName: Game Boy
+        ImageIcon: /Images/067380.png
+        ImageTitle: /Images/067378.png
+        ImageBoxArt: /Images/000002.png
+        ImageIngame: /Images/067379.png
+        LastPlayed: '2025-11-15 03:30:52'
+        NumAchieved: 23
+        NumAchievedHardcore: 23
+        NumPossibleAchievements: 23
+        ScoreAchieved: 6
+        ScoreAchievedHardcore: 6
+        PossibleScore: 6

@@ -4,10 +4,32 @@ no_screen_padding: 'no'
 dark_mode: 'no'
 static_data: ''
 polling_verb: get
-polling_url: "{% if api_key != \"\" %}https://retroachievements.org/API/API_GetUserSummary.php?y={{ api_key }}&g=5&a=20&u={{username}}\r\n\r\nhttps://retroachievements.org/API/API_GetUserRecentlyPlayedGames.php?y={{ api_key }}&u={{username}}\r\n{% else %}\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_0.json\r\n\r\nhttps://raw.githubusercontent.com/ExcuseMi/trmnl-retroachievements-plugins/refs/heads/main/stub_data/IDX_1.json\r\n{% endif %}"
+framework_version: 2.3.7
+serverless_language: node
+polling_url: ''
 polling_headers: ''
 polling_body: ''
 id: 176378
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
+oauth_authorize_url: ''
+oauth_token_url: ''
+oauth_scopes: ''
+oauth_scope_separator: ''
+oauth_refresh_url: ''
+oauth_auth_params: ''
+oauth_token_headers: ''
+oauth_token_site: ''
+oauth_token_params: ''
+oauth_token_request_auth_method: ''
+oauth_body_format: ''
+oauth_token_response_metadata: ''
+oauth_authorization_method: ''
+oauth_refresh_params: ''
+oauth_token_field_name: ''
+oauth_expiry_field_name: ''
+oauth_expiry_strategy: ''
+oauth_fixed_expiry_ms: ''
 custom_fields:
 - keyname: about
   name: About This Plugin
@@ -15,6 +37,7 @@ custom_fields:
   description: Unofficial <b>RetroAchievements</b> plugin displaying a users <b>recent games</b>.
   github_url: https://github.com/ExcuseMi/trmnl-retroachievements-plugins
   learn_more_url: https://retroachievements.org/
+  help_text: TRMNL X Ready
 - keyname: api_key
   field_type: string
   name: Retro Achievements Web API Key
